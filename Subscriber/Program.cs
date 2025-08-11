@@ -3,12 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NextStep.RabbitMQ.Interfaces;
 using NextStep.RabbitMQ.Models;
 using NextStep.RabbitMQ.Services;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Channels;
-using System.Threading.Tasks;
+
 
 namespace Subscriber
 {
@@ -17,7 +12,7 @@ namespace Subscriber
         static async Task Main(string[] args)
         {
 
-            #region "creazione di una sottoscrizione (senza l'uso della libreria di questa soluzione, direttamente sulla pagina) 
+            #region creazione di una sottoscrizione (senza l'uso della libreria di questa soluzione, direttamente sulla pagina) 
             //var factory = new ConnectionFactory() { HostName = "localhost" };
             ////istruzioni costose in termini di risorse percui uso using per dispose
             //using IConnection connection = await factory.CreateConnectionAsync();
@@ -114,7 +109,7 @@ namespace Subscriber
             //Console.WriteLine("Consumer cancellato. Uscita.");
             #endregion
 
-
+            #region Creazione sottoscrizione con libreria NextStep.RabbitMQ
             IRabbitMqConsumer client = null;
             try
             {
@@ -204,6 +199,8 @@ namespace Subscriber
                 //if (prodottoService != null)
                 //    await prodottoService.DisposeAsync();
             }
+
+            #endregion
         }
     }
 }

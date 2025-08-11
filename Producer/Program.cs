@@ -124,6 +124,9 @@ namespace Producer
             //}
             #endregion
 
+
+            #region creazione sottoscrizione con libreria
+
             IProdottoService prodottoService = null;
 
             try
@@ -196,6 +199,7 @@ namespace Producer
                   await  prodottoService.DisposeAsync();
             }
 
+            #endregion
 
         }
 
