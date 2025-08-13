@@ -135,14 +135,14 @@ namespace Subscriber
                
                 var serviceProvider = serviceCollection.BuildServiceProvider();
                 client = serviceProvider.GetRequiredService<IRabbitMqConsumer>();
-                //prodottoService = serviceProvider.GetRequiredService<IProdottoService>();
 
-                //await using var client = await RabbitMqConsumer.CreateAsync(rabbitMqSettings);
-                //{
-                    //+++++++++++
+
                     using var cts = new CancellationTokenSource();
 
-                    await client.StartConsumingAsync<Prodotto>(async prodotto =>
+                //due versioni aspettando e non, se non si aspetta la chiusura del servizio va gestita con  await Task.WhenAll(task);
+                //si veda sotto
+                //await client.StartConsumingAsync<Prodotto>(async prodotto =>
+                var task = client.StartConsumingAsync<Prodotto>(async prodotto =>
                     {
                         //qui inserire la logica di validazione o meno del dato
                         //se qualcosa va storto far ritornare false (verrà effettuato il nack con eliminazione della risorsa
@@ -159,10 +159,11 @@ namespace Subscriber
                             cts.Cancel();
                     }
 
-                    // Ora è sicuro chiudere
-                   
+                // Ora è sicuro chiudere
+                //prima di interrompere aspetta comunque che il servizio finisca di consumare le code
+                await Task.WhenAll(task);
 
-                    //+++++++++++
+                //+++++++++++
                 //}
 
 
